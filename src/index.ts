@@ -24,9 +24,9 @@ const server = Fastify({
  type TodoUpdateType = Static<typeof TodoUpdate>;
  type TodoPatchType = Static<typeof TodoPatch>;
 
-server.register(require('fastify-cors'), {
-  origin: /^http:\/\/localhost:3000/
-})
+server.register(require("fastify-cors"), {
+  origin: process.env.FRONT_URL ?? /^http:\/\/localhost:3000/
+});
 
 import TodoController from "./controllers/TodosController"
 import TodoRepository from './models/TodoRepository';
