@@ -2,11 +2,11 @@ export default class Todos {
     id: number;
     name: string;
     isCompleted: boolean;
-    deadline: number;
+    deadline: number | null;
     creationDate: number;
 
 
-    constructor(id: number, name: string, isCompleted: boolean, deadline: number, creationDate: number) {
+    constructor(id: number, name: string, isCompleted: boolean, deadline: number | null, creationDate: number) {
         this.setId(id)
         this.setName(name);
         this.setComplete(isCompleted);
@@ -24,8 +24,8 @@ export default class Todos {
     setComplete(isCompleted: boolean) {
         this.isCompleted = isCompleted
     }
-    setDeadline(deadline: number) {
-        this.deadline = deadline
+    setDeadline(deadline: number | null) {
+        this.deadline = deadline === undefined ? null : deadline
     }
     setCreation(creationDate: number) {
         this.creationDate = creationDate
