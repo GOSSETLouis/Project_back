@@ -3,9 +3,13 @@ import { Database } from "sqlite3";
 
 export default class TodoRepository {
     error: any;
-    db = new Database('/home/louis/Documents/todo-app/back/src/Database/database.db');
+    db: Database;
+    constructor(){
+        this.db = new Database('database.db')
+    }
     
     async getAll(): Promise <Array<Todos>> {
+       await this.createTableIfNotExist();
        let allTodos = []
         return new Promise((resolve, reject) => {
             this.db.all("SELECT * FROM Todos", (error: any, rows: Array<Todos>) => {
@@ -18,7 +22,6 @@ export default class TodoRepository {
                 
             });  
             resolve(allTodos);
-            console.log(allTodos)
                 }
         });
         })
@@ -26,7 +29,7 @@ export default class TodoRepository {
     }
 
     async createTodo(name: string, isCompleted: boolean, deadline: number, creationDate: number): Promise <void>{
-        console.log("coucou")
+       await this.createTableIfNotExist();
         return new Promise((resolve, reject) => {
             let sql = 'INSERT INTO "Todos" (name, isCompleted, deadline, creationDate) VALUES ($name ,$isCompleted ,$deadline ,$creationDate)'
             let params = {
@@ -46,7 +49,7 @@ export default class TodoRepository {
     }
 
     async updateTodo(id: number, isCompleted: boolean): Promise <void>{
-        console.log("coucou")
+        await this.createTableIfNotExist();
         return new Promise((resolve, reject) => {
             let sql = 'Update "Todos" set isCompleted = $isCompleted WHERE id = $id'
             let params = {
@@ -64,7 +67,7 @@ export default class TodoRepository {
     }
 
     async updateTodoName(id: number, name: string, date: number | null): Promise <void>{
-        console.log("coucou")
+        await this.createTableIfNotExist();
         return new Promise((resolve, reject) => {
             let sql = 'Update "Todos" set name = $name, deadline = $date WHERE id = $id'
             let params = {
@@ -83,7 +86,7 @@ export default class TodoRepository {
     }
 
     async deleteTodo(id: number): Promise <void>{
-        console.log("coucou")
+        await this.createTableIfNotExist();
         return new Promise((resolve, reject) => {
             let sql = 'DELETE FROM "Todos" WHERE id = $id'
             let params = {
@@ -99,6 +102,24 @@ export default class TodoRepository {
         })
     }
 
-
+    private async createTableIfNotExist(): Promise<void>{
+        return new Promise((resolve, reject) => {
+            let sql = `CREATE TABLE IF NOT EXISTS Todos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(100) NOT NULL,
+            isCompleted BIT,
+            creationDate INTEGER,
+            deadline INTEGER
+        ) `;
+            this.db.run(sql, function (error: any, result: void | PromiseLike<void>){
+                if (error){
+                    reject(error)
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+       
+    }
 
 }

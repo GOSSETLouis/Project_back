@@ -5,7 +5,7 @@ const server = Fastify({
 
 })
  const Todo = Type.Object({
-   name: Type.String(),
+   name: Type.String({minLength: 10}),
    isCompleted: Type.Boolean(),
    deadline: Type.Optional(Type.Number()),
    creationDate:Type.Number(),
@@ -29,7 +29,8 @@ server.register(require('fastify-cors'), {
 })
 
 import TodoController from "./controllers/TodosController"
-const todoController = new TodoController
+import TodoRepository from './models/TodoRepository';
+const todoController = new TodoController(new TodoRepository())
 server.get('/', async (request, reply) => {
   return todoController.renderData()
 })
@@ -90,7 +91,6 @@ server.delete<{ Params: { id: number }}>('/:id',{
    },
 }, async (request, reply) => {
 const id = request.params.id
-console.log('coucou id delete',id)
 todoController.delete(id)
 reply.status(201).send('Updated');
 })

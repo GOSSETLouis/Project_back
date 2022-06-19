@@ -1,24 +1,32 @@
 import TodoRepository from '../models/TodoRepository'
-export default class TodoController extends TodoRepository{
+export default class TodoController {
+private todoRepository: TodoRepository;
 
-
+    constructor(todoRepository: TodoRepository){
+        this.todoRepository = todoRepository;
+    }
     renderData(){
-        return this.getAll()
+        return this.todoRepository.getAll()
     }
 
     addNewTodo(name: string, isCompleted: boolean, deadline: number, creationDate: number){
-            return this.createTodo(name, isCompleted, deadline, creationDate)
+            return this.todoRepository.createTodo(
+              name,
+              isCompleted,
+              deadline,
+              creationDate
+            );
     }
 
     setTodoComplete(id: number, isCompleted: boolean){
-        return this.updateTodo(id, isCompleted)
+        return this.todoRepository.updateTodo(id, isCompleted);
     }
 
     delete(id: number){
-        return this.deleteTodo(id)
+        return this.todoRepository.deleteTodo(id);
     }
 
     update(id: number, name: string, date: number | null){
-        return this.updateTodoName(id, name, date)
+        return this.todoRepository.updateTodoName(id, name, date);
     }
 }
