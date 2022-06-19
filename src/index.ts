@@ -1,5 +1,7 @@
 import Fastify from 'fastify'
 import { Static, Type } from '@sinclair/typebox'
+import TodoController from "./controllers/TodosController";
+import TodoRepository from "./models/TodoRepository";
 
 const server = Fastify({
 
@@ -28,8 +30,7 @@ server.register(require("fastify-cors"), {
   origin: process.env.FRONT_URL ?? /^http:\/\/localhost:3000/
 });
 
-import TodoController from "./controllers/TodosController"
-import TodoRepository from './models/TodoRepository';
+
 const todoController = new TodoController(new TodoRepository())
 server.get('/', async (request, reply) => {
   return todoController.renderData()
