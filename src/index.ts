@@ -41,7 +41,6 @@ server.get<{Params: {id: number}}>('/:id', async (request, reply) => {
 })
 
 server.post<{ Body: TodoType; Reply: string }>('/', async (request, reply) => {
-     console.log(request.body)
   todoController.addNewTodo(request.body.name, request.body.isCompleted, request.body.deadline, request.body.creationDate)
   reply.status(201).send('saved')
 })

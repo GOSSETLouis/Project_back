@@ -38,12 +38,6 @@ export default class TodoRepository {
                 $deadline: deadline === null ? undefined : deadline, 
                 $creationDate: creationDate
             }
-            console.log({
-              $name: name,
-              $isCompleted: isCompleted,
-              $deadline: deadline === null ? undefined : deadline,
-              $creationDate: creationDate,
-            });
             this.db.run(sql, params, function (error: any, result: void | PromiseLike<void>){
                 if (error){
                     reject(error)
