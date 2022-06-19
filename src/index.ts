@@ -9,7 +9,7 @@ const server = Fastify({
  const Todo = Type.Object({
    name: Type.String({minLength: 10}),
    isCompleted: Type.Boolean(),
-   deadline: Type.Optional(Type.Number()),
+   deadline: Type.Union([Type.Number(), Type.Null()]),
    creationDate:Type.Number(),
  });
  type TodoType = Static<typeof Todo>;
@@ -40,14 +40,8 @@ server.get<{Params: {id: number}}>('/:id', async (request, reply) => {
   return (await todoController.renderData())[request.params.id]
 })
 
-server.post<{ Body: TodoType; Reply: string }>('/', {
-     schema: {
-       body: Todo,
-       response: {
-         200: Todo,
-       },
-     },
-   }, async (request, reply) => {
+server.post<{ Body: TodoType; Reply: string }>('/', async (request, reply) => {
+     console.log(request.body)
   todoController.addNewTodo(request.body.name, request.body.isCompleted, request.body.deadline, request.body.creationDate)
   reply.status(201).send('saved')
 })

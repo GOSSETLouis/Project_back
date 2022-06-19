@@ -10,13 +10,13 @@ export default class TodoRepository {
     
     async getAll(): Promise <Array<Todos>> {
        await this.createTableIfNotExist();
-       let allTodos = []
+       let allTodos: Todos[] = []
         return new Promise((resolve, reject) => {
             this.db.all("SELECT * FROM Todos", (error: any, rows: Array<Todos>) => {
                 if (error){
                     reject(error)
                 } else {
-                  rows.forEach((row: { id: number; name: string; isCompleted: boolean; deadline: number; creationDate: number; }) => {
+                  rows.forEach((row) => {
                 allTodos.push(new Todos(row.id, row.name, row.isCompleted, row.deadline, row.creationDate));
                 
                 
@@ -38,6 +38,12 @@ export default class TodoRepository {
                 $deadline: deadline === null ? undefined : deadline, 
                 $creationDate: creationDate
             }
+            console.log({
+              $name: name,
+              $isCompleted: isCompleted,
+              $deadline: deadline === null ? undefined : deadline,
+              $creationDate: creationDate,
+            });
             this.db.run(sql, params, function (error: any, result: void | PromiseLike<void>){
                 if (error){
                     reject(error)
