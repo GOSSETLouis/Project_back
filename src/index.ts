@@ -97,7 +97,8 @@ reply.status(201).send('Updated');
 
 const main = async () => {
   try {
-    await server.listen(8080)
+    let port = process.env.PORT ?? "8080"
+    await server.listen(port)
   } catch (err) {
     server.log.error(err)
     process.exit(1)
