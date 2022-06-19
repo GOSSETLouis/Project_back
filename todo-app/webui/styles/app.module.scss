@@ -1,0 +1,19 @@
+#__next {
+    gap: 40px;
+    flex: 1 0;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0 16px;
+    max-width: 1200px;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .left-side,
+  .list {
+    flex: 1 0;
+  }
+  
+  .left-side {
+    align-items: center;
+  }
