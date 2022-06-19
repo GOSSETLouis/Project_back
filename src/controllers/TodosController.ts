@@ -9,7 +9,7 @@ private todoRepository: TodoRepository;
         return this.todoRepository.getAll()
     }
 
-    addNewTodo(name: string, isCompleted: boolean, deadline: number, creationDate: number){
+    addNewTodo(name: string, isCompleted: boolean, deadline: number | null, creationDate: number){
             return this.todoRepository.createTodo(
               name,
               isCompleted,

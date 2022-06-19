@@ -28,14 +28,14 @@ export default class TodoRepository {
         
     }
 
-    async createTodo(name: string, isCompleted: boolean, deadline: number, creationDate: number): Promise <void>{
+    async createTodo(name: string, isCompleted: boolean, deadline: number |null, creationDate: number): Promise <void>{
        await this.createTableIfNotExist();
         return new Promise((resolve, reject) => {
             let sql = 'INSERT INTO "Todos" (name, isCompleted, deadline, creationDate) VALUES ($name ,$isCompleted ,$deadline ,$creationDate)'
             let params = {
                 $name: name, 
                 $isCompleted: isCompleted, 
-                $deadline: deadline, 
+                $deadline: deadline === null ? undefined : deadline, 
                 $creationDate: creationDate
             }
             this.db.run(sql, params, function (error: any, result: void | PromiseLike<void>){
